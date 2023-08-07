@@ -13,13 +13,6 @@ ignore =
 exclude =
     .git,
     __pycache__,
-    rpc,
-    # sql: ignore our SQL code
-    sql,
-    # src: ignore linting our C++ library
-    src,
-    # tms: ignore our TMS code
-    tms,
 max-line-length = 79
 max-doc-length = 79
 max-complexity = 18
