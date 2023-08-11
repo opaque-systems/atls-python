@@ -3,7 +3,7 @@ name = "pyatls"
 version = "0.0.1"
 description = "A Python package that implements Attested TLS (aTLS)."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 dependencies = [
     "cryptography==41.0.3",
     "PyJWT==2.8.0",

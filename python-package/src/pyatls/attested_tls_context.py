@@ -3,6 +3,7 @@ import secrets
 import socket
 import ssl
 import warnings
+from typing import List, Optional
 
 import OpenSSL.crypto
 import OpenSSL.SSL
@@ -29,21 +30,21 @@ class AttestedTLSContext(PyOpenSSLContext):
 
     Parameters
     ----------
-    validators : list[Validator]
+    validators : list of Validator
         A list of one or more evidence or attestation result validators. During
         the TLS handshake, each validator in this list is queried for the
         certificate extension OID that contains the attestation document that
         the validator understands and if a corresponding extension is found in
         the peer's certificate, the validator is invoked.
 
-    nonce : bytes | None
+    nonce : bytes, optional
         A random string of bytes to use as a nonce to ascertain the freshness
         of attestation evidence and mitigate replay attacks. If None, a random
         nonce is automatically generated.
     """
 
     def __init__(
-        self, validators: list[Validator], nonce: bytes | None = None
+        self, validators: List[Validator], nonce: Optional[bytes] = None
     ) -> None:
         super().__init__(ssl.PROTOCOL_TLSv1_2)
 
@@ -100,11 +101,11 @@ class AttestedTLSContext(PyOpenSSLContext):
         return super().wrap_socket(sock, False, True, True, sni)
 
     @property
-    def validators(self) -> list[Validator]:
+    def validators(self) -> List[Validator]:
         return self._validators
 
     @validators.setter
-    def validators(self, validators: list[Validator]) -> None:
+    def validators(self, validators: List[Validator]) -> None:
         self._validators = validators
 
     @property

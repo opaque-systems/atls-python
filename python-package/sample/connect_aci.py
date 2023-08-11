@@ -17,7 +17,7 @@
 #   --url /index
 
 import argparse
-from typing import Optional
+from typing import List, Optional
 
 from pyatls import AttestedHTTPSConnection, AttestedTLSContext
 from pyatls.validators import AzAasAciValidator
@@ -63,11 +63,11 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-policy_files: Optional[list[str]] = args.policy
-jkus: Optional[list[str]] = args.jku
+policy_files: Optional[List[str]] = args.policy
+jkus: Optional[List[str]] = args.jku
 
 # Read in the specified Rego policies, if any.
-policies: Optional[list[str]] = None
+policies: Optional[List[str]] = None
 if policy_files is not None:
     policies = []
     for filepath in policy_files:

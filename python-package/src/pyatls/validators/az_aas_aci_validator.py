@@ -2,7 +2,7 @@ import base64
 import hashlib
 import json
 import warnings
-from typing import Any
+from typing import Any, Dict, List, Optional
 
 import jwt
 from cryptography import x509
@@ -22,12 +22,12 @@ class AzAasAciValidator(Validator):
 
     Parameters
     ----------
-    policies : list[str] | None
+    policies : list of str, optional
         A list of one or more allowed plaintext Azure Confidential Computing
         Enforcement (CCE) policies. If no policies are provided, all policies
         are allowed, but a warning is issued.
 
-    jkus : list[str] | None
+    jkus : list of str, optional
         A list of one or more allowed JKU claim values. The JKU claim contains
         the URL of the JWKS server that contains the public key to use to
         verify the signature of the JWT token issued by AAS. If no JKU claim
@@ -35,7 +35,9 @@ class AzAasAciValidator(Validator):
     """
 
     def __init__(
-        self, policies: list[str] | None = None, jkus: list[str] | None = None
+        self,
+        policies: Optional[List[str]] = None,
+        jkus: Optional[List[str]] = None,
     ) -> None:
         super().__init__()
 
@@ -92,7 +94,7 @@ class AzAasAciValidator(Validator):
         if jwt["x-ms-sevsnpvm-is-debuggable"]:
             return False
 
-        jwt_runtime: dict[str, Any] = jwt["x-ms-runtime"]
+        jwt_runtime: Dict[str, Any] = jwt["x-ms-runtime"]
         if base64.b64decode(jwt_runtime["nonce"]) != nonce:
             return False
 
@@ -111,17 +113,17 @@ class AzAasAciValidator(Validator):
         return True
 
     @property
-    def jkus(self) -> list[str] | None:
+    def jkus(self) -> Optional[List[str]]:
         """List of allowed JKU claim values."""
         return self._jkus
 
     @jkus.setter
-    def jkus(self, jkus: list[str]) -> None:
+    def jkus(self, jkus: List[str]) -> None:
         self._inspect_jkus(jkus)
         self._jkus = jkus
 
     @staticmethod
-    def _inspect_jkus(jkus: list[str] | None) -> None:
+    def _inspect_jkus(jkus: Optional[List[str]]) -> None:
         if jkus is None or len(jkus) == 0:
             warnings.warn(
                 "No JKU whitelist provided, you should provide one to ensure "
@@ -131,19 +133,19 @@ class AzAasAciValidator(Validator):
             )
 
     @property
-    def policies(self) -> list[str] | None:
+    def policies(self) -> Optional[List[str]]:
         """
         List of allowed Confidential Computing Enforcement (CCE) policies.
         """
         return self._policies
 
     @policies.setter
-    def policies(self, policies: list[str] | None) -> None:
+    def policies(self, policies: Optional[List[str]]) -> None:
         self._inspect_policies(policies)
         self._policies = policies
 
     @staticmethod
-    def _inspect_policies(policies: list[str] | None) -> None:
+    def _inspect_policies(policies: Optional[List[str]]) -> None:
         if policies is None or len(policies) == 0:
             warnings.warn(
                 "No CCE policies specified for validation, you should provide "
@@ -155,7 +157,7 @@ class AzAasAciValidator(Validator):
 
 
 def _get_key_by_header(
-    header: dict[str, Any], jkus: list[str] | None
+    header: Dict[str, Any], jkus: Optional[List[str]]
 ) -> CertificatePublicKeyTypes:
     """
     Given an AAS-issued JWT header, this function contacts the JWKS server
@@ -164,10 +166,10 @@ def _get_key_by_header(
 
     Parameters
     ----------
-    header : dict[str, Any]
+    header : dict of str to any
         An unverified JWT header issued by AAS containing a JKU claim.
 
-    jkus : list[str] | None
+    jkus : list of str, optional
         A list of trusted JWKS URLs (i.e., known-good values of the JKU claim).
         If the JKU claim in the provided header is not in this list, this
         function raises an exception.
@@ -196,8 +198,8 @@ def _get_key_by_header(
 
 
 def _verify_and_decode_token(
-    token: str, jkus: list[str] | None
-) -> dict[str, Any]:
+    token: str, jkus: Optional[List[str]]
+) -> Dict[str, Any]:
     """
     Given an AAS-issued JWT header, this function verifies its signature and
     decodes its claims.
@@ -207,12 +209,12 @@ def _verify_and_decode_token(
     token : str
         A JWT token issued by AAS.
 
-    jkus : list[str] | None
+    jkus : list of str, optional
         A list of trusted JWKS URLs (i.e., known-good values of the JKU claim).
 
     Returns
     -------
-    claims : dict[str, Any]
+    claims : dict of str to any
         A dictionary containing the decoded claims from the provided JWT token.
     """
     hdr = jwt.get_unverified_header(token)

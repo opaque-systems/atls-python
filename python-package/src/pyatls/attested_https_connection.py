@@ -1,5 +1,6 @@
 import socket
 from http.client import HTTPS_PORT, HTTPConnection
+from typing import Optional, Tuple
 
 from .attested_tls_context import AttestedTLSContext  # noqa: E402
 
@@ -15,16 +16,16 @@ class AttestedHTTPSConnection(HTTPConnection):
     host : str
         IP address or hostname to connect to.
 
-    context : AtlsContext
+    context : AttestedTLSContext
         An aTLS context that performs the aTLS handshake.
 
-    port : int
+    port : int, optional
         Port to connect to.
 
     timeout : int
         Timeout for the attempt to connect to the host on the specified port.
 
-    source_address : tuple[str, str]
+    source_address : tuple of str and int, optional
         A pair of (host, port) for the client socket to bind to before
         connecting to the remote host.
 
@@ -39,9 +40,9 @@ class AttestedHTTPSConnection(HTTPConnection):
         self,
         host: str,
         context: AttestedTLSContext,
-        port: int | None = None,
-        timeout: int | None = socket._GLOBAL_DEFAULT_TIMEOUT,  # type: ignore
-        source_address: tuple[str, int] | None = None,
+        port: Optional[int] = None,
+        timeout: int = socket._GLOBAL_DEFAULT_TIMEOUT,  # type: ignore
+        source_address: Optional[Tuple[str, int]] = None,
         blocksize: int = 8192,
     ) -> None:
         super().__init__(host, port, timeout, source_address, blocksize)
