@@ -37,6 +37,6 @@ warn_unreachable = true
 # Per-module options:
 
 [[tool.mypy.overrides]]
-module = ["requests"]
+module = ["requests", "OpenSSL", "OpenSSL.crypto", "OpenSSL.SSL"]
 # Ignore "missing library stubs or py.typed marker" for all the above modules
 ignore_missing_imports = true
