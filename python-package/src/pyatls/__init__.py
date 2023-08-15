@@ -1,4 +1,4 @@
-from .attested_https_connection import AttestedHTTPSConnection
-from .attested_tls_context import AttestedTLSContext
+from pyatls.attested_https_connection import AttestedHTTPSConnection
+from pyatls.attested_tls_context import AttestedTLSContext
 
 __all__ = ["AttestedHTTPSConnection", "AttestedTLSContext"]
