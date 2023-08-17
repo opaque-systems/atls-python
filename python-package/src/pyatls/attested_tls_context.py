@@ -79,10 +79,9 @@ class AttestedTLSContext(PyOpenSSLContext):
                     spki = pub.public_bytes(
                         Encoding.DER, PublicFormat.SubjectPublicKeyInfo
                     )
-                try:
-                    return validator.validate(document, spki, self._nonce)
-                except Exception:
-                    continue
+
+                    if validator.validate(document, spki, self._nonce):
+                        return True
 
         return False
 

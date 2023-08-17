@@ -54,7 +54,10 @@ class AzAasAciValidator(Validator):
         self, document: bytes, public_key: bytes, nonce: bytes
     ) -> bool:
         # This verifies the signature of the JWT, too.
-        jwt = _verify_and_decode_token(document.decode(), self._jkus)
+        try:
+            token = _verify_and_decode_token(document.decode(), self._jkus)
+        except jwt.PyJWTError:
+            return False
 
         # The runtime data structure must match exactly the structure generated
         # by the Go ACI attestation issuer.
@@ -72,38 +75,72 @@ class AzAasAciValidator(Validator):
         runtime_data_json_hash = hashlib.sha256(runtime_data_json.encode())
         runtime_data_json_hash_hex = runtime_data_json_hash.hexdigest()
 
+        # A JWT token is valid of both of the following conditions are true:
+        #
+        # 1. It contains the keys we expect it to contain, and;
+        # 2. The keys have the values we expect them to have.
+        #
+        # The first condition is the reason why we forgo .get() and explicitly
+        # check for the presence of the keys.
+
         # TODO/HEGATTA: The AAS SEV-SNP attestation endpoint expects the
         # runtime data hash to be SHA256 while SEV-SNP hardware itself expects
         # a 512-byte block. As such, the last 64 hex bytes in AAS' claim is
         # just zeroes. Ideally, AAS should accept a SHA512 hash of the runtime
         # data.
-        aas_runtime_data_hash: str = jwt["x-ms-sevsnpvm-reportdata"]
+        if "x-ms-sevsnpvm-reportdata" not in token:
+            return False
+
+        aas_runtime_data_hash: str = token["x-ms-sevsnpvm-reportdata"]
         aas_runtime_data_hash = aas_runtime_data_hash[:64]
 
         if runtime_data_json_hash_hex != aas_runtime_data_hash:
             return False
 
-        if jwt["x-ms-attestation-type"] != "sevsnpvm":
+        if (
+            "x-ms-attestation-type" not in token
+            or token["x-ms-attestation-type"] != "sevsnpvm"
+        ):
             return False
 
-        if jwt["x-ms-compliance-status"] != "azure-compliant-uvm":
+        if (
+            "x-ms-compliance-status" not in token
+            or token["x-ms-compliance-status"] != "azure-compliant-uvm"
+        ):
             return False
 
-        if jwt["x-ms-sevsnpvm-is-debuggable"]:
+        if (
+            "x-ms-sevsnpvm-is-debuggable" not in token
+            or token["x-ms-sevsnpvm-is-debuggable"]
+        ):
             return False
 
-        jwt_runtime: Dict[str, Any] = jwt["x-ms-runtime"]
-        if base64.b64decode(jwt_runtime["nonce"]) != nonce:
+        if "x-ms-runtime" not in token:
             return False
 
-        if base64.b64decode(jwt_runtime["publicKey"]) != public_key:
+        token_runtime: Dict[str, Any] = token["x-ms-runtime"]
+
+        if (
+            "nonce" not in token_runtime
+            or base64.b64decode(token_runtime["nonce"]) != nonce
+        ):
+            return False
+
+        if (
+            "publicKey" not in token_runtime
+            or base64.b64decode(token_runtime["publicKey"]) != public_key
+        ):
             return False
 
         if self._policies is not None:
+            if "x-ms-sevsnpvm-hostdata" not in token:
+                return False
+
+            token_host_data = token["x-ms-sevsnpvm-hostdata"]
             for policy in self._policies:
                 policy_hash_hex = hashlib.sha256(policy.encode()).hexdigest()
 
-                if jwt["x-ms-sevsnpvm-hostdata"] == policy_hash_hex:
+                if token_host_data == policy_hash_hex:
                     return True
 
             return False
