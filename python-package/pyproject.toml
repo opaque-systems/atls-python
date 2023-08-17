@@ -1,16 +1,35 @@
 [project]
 name = "pyatls"
-version = "0.0.1"
+version = "0.1.0"
 description = "A Python package that implements Attested TLS (aTLS)."
 readme = "README.md"
+authors = [{ name = "Opaque Systems", email = "pypi@opaque.co" }]
+license = { file = "LICENSE" }
 requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+]
+keywords = [
+    "confidential",
+    "llm",
+    "tls",
+    "ssl",
+    "atls",
+    "attestation",
+    "security",
+    "privacy",
+]
 dependencies = [
-    "cryptography==41.0.3",
-    "PyJWT==2.8.0",
-    "pyOpenSSL==23.2.0",
+    "cryptography",
+    "PyJWT",
+    "pyOpenSSL",
     "urllib3==1.26.16",
 ]
 
+[project.urls]
+Homepage = "https://github.com/opaque-systems/atls-python"
+
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
