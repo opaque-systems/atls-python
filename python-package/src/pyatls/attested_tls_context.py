@@ -60,11 +60,11 @@ class AttestedTLSContext(PyOpenSSLContext):
 
     def _verify_certificate(
         self,
-        conn: OpenSSL.SSL.Connection,
+        _conn: OpenSSL.SSL.Connection,
         x509: OpenSSL.crypto.X509,
-        err_no: int,
-        err_depth: int,
-        return_code: int,
+        _err_no: int,
+        _err_depth: int,
+        _return_code: int,
     ) -> bool:
         """OpenSSL certificate validation callback"""
 
