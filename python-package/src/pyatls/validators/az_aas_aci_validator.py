@@ -1,7 +1,6 @@
 import base64
 import hashlib
 import json
-import warnings
 from typing import Any, Dict, List, Optional
 
 import jwt
@@ -10,7 +9,7 @@ from cryptography.hazmat.primitives.asymmetric.types import (
     CertificatePublicKeyTypes,
 )
 from cryptography.x509.oid import ObjectIdentifier
-from pyatls.validators.validator import SecurityWarning, Validator
+from pyatls.validators.validator import Validator
 
 
 class AzAasAciValidator(Validator):
@@ -39,10 +38,7 @@ class AzAasAciValidator(Validator):
     ) -> None:
         super().__init__()
 
-        self._inspect_policies(policies)
         self._policies = policies
-
-        self._inspect_jkus(jkus)
         self._jkus = jkus
 
     @staticmethod
@@ -154,18 +150,7 @@ class AzAasAciValidator(Validator):
 
     @jkus.setter
     def jkus(self, jkus: List[str]) -> None:
-        self._inspect_jkus(jkus)
         self._jkus = jkus
-
-    @staticmethod
-    def _inspect_jkus(jkus: Optional[List[str]]) -> None:
-        if jkus is None or len(jkus) == 0:
-            warnings.warn(
-                "No JKU whitelist provided, you should provide one to ensure "
-                "that only trusted JWKS servers are used to retrieve JWT "
-                "signature validation keys.",
-                SecurityWarning,
-            )
 
     @property
     def policies(self) -> Optional[List[str]]:
@@ -176,19 +161,7 @@ class AzAasAciValidator(Validator):
 
     @policies.setter
     def policies(self, policies: Optional[List[str]]) -> None:
-        self._inspect_policies(policies)
         self._policies = policies
-
-    @staticmethod
-    def _inspect_policies(policies: Optional[List[str]]) -> None:
-        if policies is None or len(policies) == 0:
-            warnings.warn(
-                "No CCE policies specified for validation, you should provide "
-                "at least one to ensure that the ACI container instance you "
-                "are attesting is running with the expected security "
-                "properties",
-                SecurityWarning,
-            )
 
 
 def _get_key_by_header(

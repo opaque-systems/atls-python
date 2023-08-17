@@ -3,10 +3,6 @@ from abc import ABC, abstractmethod
 from cryptography.x509.oid import ObjectIdentifier
 
 
-class SecurityWarning(Warning):
-    """Issued when performing actions with an insecure configuration."""
-
-
 class Validator(ABC):
     """
     Abstract class representing functionality to verify evidence or appraise an
