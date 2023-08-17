@@ -15,11 +15,11 @@ class Validator(ABC):
 
     @staticmethod
     @abstractmethod
-    def get_identifier() -> ObjectIdentifier:
+    def accepts(oid: ObjectIdentifier) -> bool:
         """
-        Returns the X.509 Object Identifier (OID) of the certificate extension
-        where the caller can find an attestation document that this validator
-        can appraise.
+        Returns whether this validator can appraise an attestation document
+        contained in a certificate extension with the specified X.509 Object
+        Identifier (OID).
         """
         raise NotImplementedError
 

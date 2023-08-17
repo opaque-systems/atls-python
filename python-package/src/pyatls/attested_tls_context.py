@@ -71,26 +71,18 @@ class AttestedTLSContext(PyOpenSSLContext):
         peer_cert = x509.to_cryptography()
 
         for validator in self._validators:
-            if not isinstance(validator, Validator):
-                raise ValueError("A specified validator is of the wrong type")
-
-            id = validator.get_identifier()
-
-            try:
-                ext = peer_cert.extensions.get_extension_for_oid(id)
-            except ExtensionNotFound:
-                continue
-
-            document = ext.value.value
-            pub = peer_cert.public_key()
-            spki = pub.public_bytes(
-                Encoding.DER, PublicFormat.SubjectPublicKeyInfo
-            )
-
-            try:
-                return validator.validate(document, spki, self._nonce)
-            except Exception:
-                continue
+            extension: Extension[ExtensionType]
+            for extension in peer_cert.extensions:
+                if validator.accepts(extension.oid):
+                    document = extension.value.value
+                    pub = peer_cert.public_key()
+                    spki = pub.public_bytes(
+                        Encoding.DER, PublicFormat.SubjectPublicKeyInfo
+                    )
+                try:
+                    return validator.validate(document, spki, self._nonce)
+                except Exception:
+                    continue
 
         return False
 
