@@ -86,6 +86,8 @@ class AttestedTLSContext(PyOpenSSLContext):
         return False
 
     def wrap_socket(self, sock: socket.socket) -> WrappedSocket:
+        # To perform aTLS over regular TLS, we use the Server Name Indication
+        # extension to carry the nonce.
         sni = base64.encodebytes(self._nonce)
 
         return super().wrap_socket(sock, False, True, True, sni)
