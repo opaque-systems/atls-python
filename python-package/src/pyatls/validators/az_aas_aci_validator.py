@@ -11,7 +11,7 @@ from cryptography.hazmat.primitives.asymmetric.types import (
 )
 from cryptography.x509 import oid
 from cryptography.x509.oid import ObjectIdentifier
-from pyatls.validators import SecurityWarning, Validator
+from pyatls.validators.validator import SecurityWarning, Validator
 
 
 class AzAasAciValidator(Validator):

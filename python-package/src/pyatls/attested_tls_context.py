@@ -8,17 +8,16 @@ from typing import List, Optional
 import OpenSSL.crypto
 import OpenSSL.SSL
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
-from cryptography.x509.extensions import ExtensionNotFound
+from cryptography.x509.extensions import Extension, ExtensionType
 
 # TODO/HEGATTA: Either take the code from urllib3 that wraps PyOpenSSL or ditch
 # PyOpenSSL altogether in favor of either modifying Python's SSL module to
 # support custom certificate validation or switching to mbedTLS (and
 # contributing support for custom certificate validation there).
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+from pyatls.validators import Validator  # noqa: E402
 from urllib3.contrib.pyopenssl import PyOpenSSLContext  # noqa: E402
 from urllib3.contrib.pyopenssl import WrappedSocket  # noqa: E402
-
-from .validators import Validator  # noqa: E402
 
 
 class AttestedTLSContext(PyOpenSSLContext):

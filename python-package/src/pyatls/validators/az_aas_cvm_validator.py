@@ -1,6 +1,6 @@
 from cryptography.x509 import oid
 from cryptography.x509.oid import ObjectIdentifier
-from pyatls.validators import Validator
+from pyatls.validators.validator import Validator
 
 
 class AzAasCvmValidator(Validator):
