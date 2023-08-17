@@ -1,1 +1,92 @@
-# PyATLS
+# Python aTLS Package
+
+An implementation of Attested TLS (aTLS) for Python.
+
+Supports the client-side handshake against a custom attester that issues JWT
+tokens via the Azure Attestation Service (AAS) running on Azure Container
+Instance (ACI) instances.
+
+For the moment, this package exists to support [`promptguard`](PyPi), a
+confidential information redaction service that runs in a Trusted Execution
+Environment (TEE).
+
+**Note:** The server-side counterpart to this package is not yet public. If you
+are interested in using the aTLS functionality in this package, please reach out
+by filing an issue on [GitHub](https://github.com/opaque-systems/atls-python/).
+
+## Overview
+
+Confidential computing is an emerging field focused on protecting data not only
+at rest and in transit, but also during use.
+
+Typically, the security of a service running in the cloud depends on the
+security and trustworthiness of the cloud fabric it is hosted on and of the
+entity that provides the service. Additionally, there is no way for a user of
+such a service to ascertain, with cryptographic proof, that the service they are
+using really is the service they expect in terms of the very code that the
+service runs.
+
+In contrast to traditional service deployments, with confidential computing one
+relies on Trusted Execution Environments, or TEEs. A TEE provides guaranteees of
+confidentiality and integrity of code and data as well as a mechanism for remote
+entities to appraise its trustworthiness known as remote attestation, all rooted
+in hardware.
+
+During remote attestation, the user of a service running inside a TEE challenges
+the service to produce evidence of its trustworthiness. This evidence includes
+measurements of the hosting environment, including hardware, firmware, and
+software stack that the service is running on, as well as measurements of the
+service itself. In turn, these measurements are produced in such a way that they
+are as trustworthy as the manufacturer of the TEE itself (e.g., Intel or AMD).
+
+Perhaps most crucially, TEEs and remote attestation can be used to create
+services that run in such a way that neither the cloud fabric nor the service
+owner can neither access nor tamper with the service. That is, users of the
+service may convince themselves through remote attestation that any data that
+they share with the service will be shielded from the cloud fabric as well as
+from the service provider.
+
+This package aims at implementing remote attestation for various TEEs in Python.
+
+## Design
+
+The main workhorse of this package is the `AttestedTLSContext` class. Instances
+of this class are parameterized with one or more `Validator`s. A `Validator` can
+understand and appraise evidence or attestation results issued by an attester or
+verifier, respectively, contained in an attestation document created by an
+issuer, itself embedded in a TLS certificate.
+
+The appraisal of an attestation document takes the place of the typical
+PKI-based certificate validation performed during regular TLS. By appraising an
+attestation document via `Validator`s, the `AttestedTLSContext` class binds the
+TLS handshake not to a PKI-backed entity but to a genuine TEE.
+
+## Sample Usage
+
+The following snippet demonstrates how to use this package, assuming a service
+running on a confidential ACI instance with the corresponding attestation
+document issuer, and submit an HTTP request:
+
+```python
+from pyatls import AttestedHTTPSConnection, AttestedTLSContext
+from pyatls.validators import AzAasAciValidator
+
+validator = AzAasAciValidator()
+ctx = AttestedTLSContext([validator])
+conn = AttestedHTTPConnection("my.confidential.service.net", ctx)
+
+conn.request("GET", "/index")
+print(conn.getresponse().read().decode())
+```
+
+## Further Reading
+
+If you are unfamiliar with the terms used in this README and would like to learn
+more, consider the following resources:
+
+- [Confidential Computing at
+  Wikipedia](https://en.wikipedia.org/wiki/Confidential_computing)
+- [White Papers & Resources at the Confidential Computing
+  Consortium](https://confidentialcomputing.io/resources/white-papers-reports/)
+- [Remote Attestation Procedures RFC 9334 at the
+  IETF](https://datatracker.ietf.org/doc/rfc9334/)

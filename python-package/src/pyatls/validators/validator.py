@@ -3,10 +3,6 @@ from abc import ABC, abstractmethod
 from cryptography.x509.oid import ObjectIdentifier
 
 
-class SecurityWarning(Warning):
-    """Issued when performing actions with an insecure configuration."""
-
-
 class Validator(ABC):
     """
     Abstract class representing functionality to verify evidence or appraise an
@@ -15,11 +11,11 @@ class Validator(ABC):
 
     @staticmethod
     @abstractmethod
-    def get_identifier() -> ObjectIdentifier:
+    def accepts(oid: ObjectIdentifier) -> bool:
         """
-        Returns the X.509 Object Identifier (OID) of the certificate extension
-        where the caller can find an attestation document that this validator
-        can appraise.
+        Returns whether this validator can appraise an attestation document
+        contained in a certificate extension with the specified X.509 Object
+        Identifier (OID).
         """
         raise NotImplementedError
 

@@ -2,7 +2,7 @@ import socket
 from http.client import HTTPS_PORT, HTTPConnection
 from typing import Optional, Tuple
 
-from pyatls import AttestedTLSContext
+from pyatls.attested_tls_context import AttestedTLSContext
 
 
 class AttestedHTTPSConnection(HTTPConnection):
