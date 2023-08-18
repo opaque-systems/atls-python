@@ -6,9 +6,10 @@ Supports the client-side handshake against a custom attester that issues JWT
 tokens via the Azure Attestation Service (AAS) running on Azure Container
 Instance (ACI) instances.
 
-For the moment, this package exists to support [`promptguard`](PyPi), a
-confidential information redaction service that runs in a Trusted Execution
-Environment (TEE).
+For the moment, this package exists to support
+[`promptguard`](https://pypi.org/project/promptguard/), a confidential
+information redaction service that runs in a Trusted Execution Environment
+(TEE).
 
 **Note:** The server-side counterpart to this package is not yet public. If you
 are interested in using the aTLS functionality in this package, please reach out
