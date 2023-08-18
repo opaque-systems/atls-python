@@ -1,4 +1,4 @@
-# Sample usage of the PyATLS package
+# Sample usage of the atls package
 #
 # Suppose a simple HTTP server with a single GET endpoint /index is running
 # over aTLS in an AMD SEV-SNP-backed Azure ACI container instance on HOST:PORT.
@@ -19,8 +19,8 @@
 import argparse
 from typing import List, Optional
 
-from pyatls import AttestedHTTPSConnection, AttestedTLSContext
-from pyatls.validators import AzAasAciValidator
+from atls import AttestedHTTPSConnection, AttestedTLSContext
+from atls.validators import AzAasAciValidator
 
 # Parse arguments
 parser = argparse.ArgumentParser()

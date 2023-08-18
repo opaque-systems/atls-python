@@ -15,7 +15,7 @@ from cryptography.x509.extensions import Extension, ExtensionType
 # support custom certificate validation or switching to mbedTLS (and
 # contributing support for custom certificate validation there).
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-from pyatls.validators import Validator  # noqa: E402
+from atls.validators import Validator  # noqa: E402
 from urllib3.contrib.pyopenssl import PyOpenSSLContext  # noqa: E402
 from urllib3.contrib.pyopenssl import WrappedSocket  # noqa: E402
 

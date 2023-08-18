@@ -68,8 +68,8 @@ running on a confidential ACI instance with the corresponding attestation
 document issuer, and submit an HTTP request:
 
 ```python
-from pyatls import AttestedHTTPSConnection, AttestedTLSContext
-from pyatls.validators import AzAasAciValidator
+from atls import AttestedHTTPSConnection, AttestedTLSContext
+from atls.validators import AzAasAciValidator
 
 validator = AzAasAciValidator()
 ctx = AttestedTLSContext([validator])
