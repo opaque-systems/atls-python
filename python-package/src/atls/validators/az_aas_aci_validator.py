@@ -4,12 +4,12 @@ import json
 from typing import Any, Dict, List, Optional
 
 import jwt
+from atls.validators.validator import Validator
 from cryptography import x509
 from cryptography.hazmat.primitives.asymmetric.types import (
     CertificatePublicKeyTypes,
 )
 from cryptography.x509.oid import ObjectIdentifier
-from atls.validators.validator import Validator
 
 
 class AzAasAciValidator(Validator):

@@ -1,5 +1,5 @@
-from cryptography.x509.oid import ObjectIdentifier
 from atls.validators.validator import Validator
+from cryptography.x509.oid import ObjectIdentifier
 
 
 class AzAasCvmValidator(Validator):
