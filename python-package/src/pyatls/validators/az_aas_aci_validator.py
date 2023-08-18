@@ -71,7 +71,7 @@ class AzAasAciValidator(Validator):
         runtime_data_json_hash = hashlib.sha256(runtime_data_json.encode())
         runtime_data_json_hash_hex = runtime_data_json_hash.hexdigest()
 
-        # A JWT token is valid of both of the following conditions are true:
+        # A JWT token is valid if both of the following conditions are true:
         #
         # 1. It contains the keys we expect it to contain, and;
         # 2. The keys have the values we expect them to have.
