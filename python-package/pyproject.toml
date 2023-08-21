@@ -1,6 +1,6 @@
 [project]
 name = "pyatls"
-version = "0.1.0"
+version = "0.0.1"
 description = "A Python package that implements Attested TLS (aTLS)."
 readme = "README.md"
 authors = [{ name = "Opaque Systems", email = "pypi@opaque.co" }]
@@ -24,7 +24,7 @@ dependencies = [
     "cryptography",
     "PyJWT",
     "pyOpenSSL",
-    "urllib3==1.26.16",
+    "urllib3 >= 1.26.16, < 2.1.0",
 ]
 
 [project.urls]

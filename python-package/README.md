@@ -11,6 +11,9 @@ For the moment, this package exists to support
 information redaction service that runs in a Trusted Execution Environment
 (TEE).
 
+**API Stability:** This package is still in development. As such, its API may
+change until it is sufficiently mature.
+
 **Note:** The server-side counterpart to this package is not yet public. If you
 are interested in using the aTLS functionality in this package, please reach out
 by filing an issue on [GitHub](https://github.com/opaque-systems/atls-python/).
@@ -28,7 +31,7 @@ using really is the service they expect in terms of the very code that the
 service runs.
 
 In contrast to traditional service deployments, with confidential computing one
-relies on Trusted Execution Environments, or TEEs. A TEE provides guaranteees of
+relies on Trusted Execution Environments, or TEEs. A TEE provides guarantees of
 confidentiality and integrity of code and data as well as a mechanism for remote
 entities to appraise its trustworthiness known as remote attestation, all rooted
 in hardware.
@@ -44,10 +47,10 @@ Perhaps most crucially, TEEs and remote attestation can be used to create
 services that run in such a way that neither the cloud fabric nor the service
 owner can neither access nor tamper with the service. That is, users of the
 service may convince themselves through remote attestation that any data that
-they share with the service will be shielded from the cloud fabric as well as
-from the service provider.
+they share with the service will be shielded from the cloud fabric and also from
+the service provider.
 
-This package aims at implementing remote attestation for various TEEs in Python.
+This package aims to implement remote attestation for various TEEs in Python.
 
 ## Design
 
