@@ -1,6 +1,6 @@
 [project]
 name = "pyatls"
-version = "0.1.0"
+version = "0.0.1"
 description = "A Python package that implements Attested TLS (aTLS)."
 readme = "README.md"
 authors = [{ name = "Opaque Systems", email = "pypi@opaque.co" }]
