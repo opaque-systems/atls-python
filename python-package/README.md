@@ -54,7 +54,7 @@ This package aims to implement remote attestation for various TEEs in Python.
 
 ## Design
 
-The main workhorse of this package is the `AttestedTLSContext` class. Instances
+The main workhorse of this package is the `ATLSContext` class. Instances
 of this class are parameterized with one or more `Validator`s. A `Validator` can
 understand and appraise evidence or attestation results issued by an attester or
 verifier, respectively, contained in an attestation document created by an
@@ -62,7 +62,7 @@ issuer, itself embedded in a TLS certificate.
 
 The appraisal of an attestation document takes the place of the typical
 PKI-based certificate validation performed during regular TLS. By appraising an
-attestation document via `Validator`s, the `AttestedTLSContext` class binds the
+attestation document via `Validator`s, the `ATLSContext` class binds the
 TLS handshake not to a PKI-backed entity but to a genuine TEE.
 
 ## Sample Usage
@@ -72,12 +72,12 @@ running on a confidential ACI instance with the corresponding attestation
 document issuer, and submit an HTTP request:
 
 ```python
-from atls import AttestedHTTPSConnection, AttestedTLSContext
+from atls import HTTPAConnection, ATLSContext
 from atls.validators import AzAasAciValidator
 
 validator = AzAasAciValidator()
-ctx = AttestedTLSContext([validator])
-conn = AttestedHTTPConnection("my.confidential.service.net", ctx)
+ctx = ATLSContext([validator])
+conn = HTTPAConnection("my.confidential.service.net", ctx)
 
 conn.request("GET", "/index")
 print(conn.getresponse().read().decode())
