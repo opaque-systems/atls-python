@@ -23,7 +23,7 @@ exclude = '''
 # https://pycqa.github.io/isort/docs/configuration/profiles.html
 profile = "black"
 filter_files = true
-line_length = 79  # must be to set to the same value as that in black
+line_length = 79    # must be to set to the same value as that in black
 
 # ========== mypy - type checker options ==========
 # Global options:
@@ -37,6 +37,12 @@ warn_unreachable = true
 # Per-module options:
 
 [[tool.mypy.overrides]]
-module = ["requests", "OpenSSL", "OpenSSL.crypto", "OpenSSL.SSL"]
+module = [
+  "requests",
+  "requests.adapters",
+  "OpenSSL",
+  "OpenSSL.crypto",
+  "OpenSSL.SSL",
+]
 # Ignore "missing library stubs or py.typed marker" for all the above modules
 ignore_missing_imports = true
