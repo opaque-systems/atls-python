@@ -1,4 +1,7 @@
-from atls.attested_https_connection import AttestedHTTPSConnection
-from atls.attested_tls_context import AttestedTLSContext
+from atls.atls_context import ATLSContext
+from atls.httpa_connection import HTTPAConnection
 
-__all__ = ["AttestedHTTPSConnection", "AttestedTLSContext"]
+__all__ = [
+    "HTTPAConnection",
+    "ATLSContext",
+]

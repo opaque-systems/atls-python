@@ -20,7 +20,7 @@ from urllib3.contrib.pyopenssl import PyOpenSSLContext  # noqa: E402
 from urllib3.contrib.pyopenssl import WrappedSocket  # noqa: E402
 
 
-class AttestedTLSContext(PyOpenSSLContext):
+class ATLSContext(PyOpenSSLContext):
     """
     An SSL context that supports validation of aTLS certificates.
 
