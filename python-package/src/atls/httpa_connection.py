@@ -2,10 +2,10 @@ import socket
 from http.client import HTTPS_PORT, HTTPConnection
 from typing import Optional, Tuple
 
-from atls.attested_tls_context import AttestedTLSContext
+from atls import ATLSContext
 
 
-class AttestedHTTPSConnection(HTTPConnection):
+class HTTPAConnection(HTTPConnection):
     """
     Performs HTTP requests over an Attested TLS (aTLS) connection. It is
     equivalent to HTTPSConnection, but the underlying transport is aTLS instead
@@ -16,7 +16,7 @@ class AttestedHTTPSConnection(HTTPConnection):
     host : str
         IP address or hostname to connect to.
 
-    context : AttestedTLSContext
+    context : ATLSContext
         An aTLS context that performs the aTLS handshake.
 
     port : int, optional
@@ -39,7 +39,7 @@ class AttestedHTTPSConnection(HTTPConnection):
     def __init__(
         self,
         host: str,
-        context: AttestedTLSContext,
+        context: ATLSContext,
         port: Optional[int] = None,
         timeout: int = socket._GLOBAL_DEFAULT_TIMEOUT,  # type: ignore
         source_address: Optional[Tuple[str, int]] = None,
@@ -47,7 +47,7 @@ class AttestedHTTPSConnection(HTTPConnection):
     ) -> None:
         super().__init__(host, port, timeout, source_address, blocksize)
 
-        if not isinstance(context, AttestedTLSContext):
+        if not isinstance(context, ATLSContext):
             raise ValueError("context must be an instance of AtlsContext")
 
         self._context = context

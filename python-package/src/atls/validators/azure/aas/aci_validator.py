@@ -4,7 +4,7 @@ import json
 from typing import Any, Dict, List, Optional
 
 import jwt
-from atls.validators.validator import Validator
+from atls.validators import Validator
 from cryptography import x509
 from cryptography.hazmat.primitives.asymmetric.types import (
     CertificatePublicKeyTypes,
@@ -12,7 +12,7 @@ from cryptography.hazmat.primitives.asymmetric.types import (
 from cryptography.x509.oid import ObjectIdentifier
 
 
-class AzAasAciValidator(Validator):
+class AciValidator(Validator):
     """
     Validates an attestation document issued for a confidential Azure ACI
     container running on AMD SEV-SNP using the Azure Attestation Service (AAS).

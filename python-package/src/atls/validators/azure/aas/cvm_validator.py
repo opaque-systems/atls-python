@@ -1,8 +1,8 @@
-from atls.validators.validator import Validator
+from atls.validators import Validator
 from cryptography.x509.oid import ObjectIdentifier
 
 
-class AzAasCvmValidator(Validator):
+class CvmValidator(Validator):
     """
     Validates an attestation document issued for an Azure Confidential Virtual
     Machine (CVM) running on AMD SEV-SNP using the Azure Attestation Service
