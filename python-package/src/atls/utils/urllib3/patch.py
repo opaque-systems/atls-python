@@ -1,6 +1,7 @@
 import socket
 from typing import Any, Dict, List, Optional, Tuple
 
+import urllib3
 from atls import ATLSContext, HTTPAConnection
 from atls.validators import Validator
 
@@ -53,8 +54,6 @@ def inject_into_urllib3(validators: List[Validator]) -> None:
             # which it always is.
             return True
 
-    import urllib3
-
     global _orig_urllib3_connection_cls
     _orig_urllib3_connection_cls = (
         urllib3.connectionpool.HTTPSConnectionPool.ConnectionCls
@@ -71,8 +70,6 @@ def extract_from_urllib3() -> None:
     global _orig_urllib3_connection_cls
     if _orig_urllib3_connection_cls is None:
         return
-
-    import urllib3
 
     urllib3.connectionpool.HTTPSConnectionPool.ConnectionCls = (
         _orig_urllib3_connection_cls
