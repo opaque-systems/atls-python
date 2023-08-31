@@ -74,6 +74,9 @@ class ATLSContext(PyOpenSSLContext):
             extension: Extension[ExtensionType]
             for extension in peer_cert.extensions:
                 if validator.accepts(extension.oid):
+                    if not hasattr(extension.value, "value"):
+                        continue
+
                     document = extension.value.value
                     pub = peer_cert.public_key()
                     spki = pub.public_bytes(
