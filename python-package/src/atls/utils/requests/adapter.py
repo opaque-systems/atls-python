@@ -1,7 +1,7 @@
 import socket
 from typing import Any, Dict, List, Optional, Tuple
 
-from atls import ATLSContext, HTTPAConnection
+from atls.utils._httpa_connection_shim import _HTTPAConnectionShim
 from atls.validators import Validator
 from requests.adapters import (
     DEFAULT_POOLBLOCK,
@@ -12,40 +12,6 @@ from requests.adapters import (
 from urllib3 import HTTPSConnectionPool
 from urllib3.poolmanager import PoolManager
 from urllib3.util.retry import Retry as Retry
-
-
-class _HTTPAConnectionShim(HTTPAConnection):
-    """
-    Provides impendance-matching at the interface between urllib3 and the
-    HTTPAConnection class.
-    """
-
-    Validators: List[Validator]
-
-    def __init__(
-        self,
-        host: str,
-        port: Optional[int] = None,
-        timeout: int = socket._GLOBAL_DEFAULT_TIMEOUT,  # type: ignore
-        source_address: Optional[Tuple[str, int]] = None,
-        blocksize: int = 8192,
-        # We use kwargs to catch additional parameters that urllib3 passes
-        # to its selected HTTPS connection that we do not use and which we
-        # do not want to expose to developers at the level of the
-        # underlying class (i.e., HTTPAConnection) because they will have no
-        # use for them either.
-        **_kwargs: Dict[str, Any],
-    ) -> None:
-        context = ATLSContext(self.Validators)
-
-        super().__init__(
-            host, context, port, timeout, source_address, blocksize
-        )
-
-    def is_verified(self) -> bool:
-        # This function returns whether the connection is SSL-enabled which it
-        # always is.
-        return True
 
 
 class _HTTPAPoolManager(PoolManager):
