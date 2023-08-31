@@ -1,5 +1,4 @@
-import socket
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Union
 
 from atls.utils._httpa_connection_shim import _HTTPAConnectionShim
 from atls.validators import Validator
@@ -51,7 +50,7 @@ class HTTPAAdapter(HTTPAdapter):
         validators: List[Validator],
         pool_connections: int = DEFAULT_POOLSIZE,
         pool_maxsize: int = DEFAULT_POOLSIZE,
-        max_retries: Retry | int = DEFAULT_RETRIES,
+        max_retries: Union[Retry, int] = DEFAULT_RETRIES,
         pool_block: bool = DEFAULT_POOLBLOCK,
     ) -> None:
         self.validators = validators
