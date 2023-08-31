@@ -1,4 +1,5 @@
 cryptography==41.0.3
 PyJWT==2.8.0
 pyOpenSSL==23.2.0
-urllib3==1.26.16
+requests==2.31.0
+urllib3==2.0.4
