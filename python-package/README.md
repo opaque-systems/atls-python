@@ -82,10 +82,9 @@ conn = HTTPAConnection("my.confidential.service.net", ctx)
 conn.request("GET", "/index")
 
 response = conn.getresponse()
-code = response.getcode()
 
-print(f"Status: {code}")
-print(f"Response: {response.read().decode()}")
+print(f"Status: {response.status}")
+print(f"Response: {response.data.decode()}")
 
 conn.close()
 ```
@@ -109,6 +108,11 @@ response = session.request("GET", "httpa://my.confidential.service.net/index")
 print(f"Status: {response.status_code}")
 print(f"Response: {response.text}")
 ```
+
+**Note**: The `requests` library is not marked as a dependency of this package
+because it is not required for its operation. As such, if you wish to use
+`requests`, install it via `pip install requests` prior to importing
+`HTTPAAdapter`.
 
 ## Further Reading
 
