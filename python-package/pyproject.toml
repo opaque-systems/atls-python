@@ -27,6 +27,9 @@ dependencies = [
     "urllib3 >= 2.0.0, < 2.1.0",
 ]
 
+[project.optional-dependencies]
+requests = ["requests"]
+
 [project.urls]
 Homepage = "https://github.com/opaque-systems/atls-python"
 
