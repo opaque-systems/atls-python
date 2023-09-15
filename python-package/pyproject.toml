@@ -11,14 +11,14 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
 ]
 keywords = [
-    "confidential",
-    "llm",
-    "tls",
-    "ssl",
     "atls",
     "attestation",
-    "security",
+    "confidential",
+    "llm",
     "privacy",
+    "security",
+    "ssl",
+    "tls",
 ]
 dependencies = [
     "cryptography",
