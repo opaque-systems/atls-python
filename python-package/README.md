@@ -7,7 +7,7 @@ tokens via the Azure Attestation Service (AAS) running on Azure Container
 Instance (ACI) instances.
 
 For the moment, this package exists to support
-[`promptguard`](https://pypi.org/project/promptguard/), a confidential
+[`OpaquePrompts`](https://pypi.org/project/opaqueprompts/), a confidential
 information redaction service that runs in a Trusted Execution Environment
 (TEE).
 
